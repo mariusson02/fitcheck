@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import SegmentPreview from './components/SegmentPreview'
 import ImageUploader from './components/ImageUploader'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <ImageUploader />
+    <>
+      <ImageUploader />
+      <SegmentPreview />
+    </>
   )
 }
 
