@@ -6,10 +6,10 @@ import * as bodyPix from '@tensorflow-models/body-pix';
 type Status = 'idle' | 'loading' | 'ready' | 'processing' | 'error';
 
 /**
- * Hook that lazily loads BodyPix and exposes functions to segment an image File
+ * Hook that loads BodyPix and exposes functions to segment an image File
  * into a transparent PNG (Blob) or a data URL for preview.
  */
-export default function useBodySegmentation() {
+function useBodySegmentation() {
   const modelRef = useRef<bodyPix.BodyPix | null>(null);
   const [status, setStatus] = useState<Status>('idle');
 
@@ -22,7 +22,7 @@ export default function useBodySegmentation() {
       try {
         // setBackend may fail if backend isn't registered; ignore error and let tf pick a backend
         await tf.setBackend('webgl');
-      } catch (e) {
+      } catch {
         // fallback — webgl not available or not registered
       }
       // Mobile-friendly defaults — tune multiplier/outputStride for quality/speed
@@ -117,3 +117,5 @@ export default function useBodySegmentation() {
 
   return { status, loadModel, segmentFile, segmentFileAsDataUrl } as const;
 }
+
+export default useBodySegmentation;
