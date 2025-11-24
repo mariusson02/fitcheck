@@ -1,8 +1,8 @@
-# FitCheck — Frontend
+# FitCheck
 
-A small React + TypeScript single-page app that lets you upload an image, runs client-side person segmentation (BodyPix), generates a transparent segmented preview, and extracts a color palette and score (0 to 1 - 1 being the best). The project is scaffolded with Vite.
+A small React + TypeScript single-page app that lets you upload an image, runs client-side person segmentation (BodyPix), generates a transparent segmented preview, and extracts a color palette and score (0 to 1 - 1 being the best).
 
-**Stack:** React, TypeScript, Vite, TensorFlow.js (BodyPix), chroma-js (palette analysis). Optional/experimental: Three.js (3D viewer).
+**Stack:** React, TypeScript, Vite, TensorFlow.js (BodyPix), chroma-js (palette analysis).
 
 **Quick Start (development)**
 
