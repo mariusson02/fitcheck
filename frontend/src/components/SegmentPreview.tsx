@@ -2,14 +2,8 @@ import { useCallback, useState } from 'react';
 import ImageUploader from './ImageUploader';
 import useBodySegmentation from '../hooks/useBodySegmentation';
 import { getPaletteFromCanvas, scorePalette } from '../utils/colorAnalysis';
-import '../index.css';
 
-type Props = {
-  /** Optional preview size */
-  maxPreviewWidth?: number;
-};
-
-export default function SegmentPreview({ maxPreviewWidth = 300 }: Props) {
+function SegmentPreview() {
   const { status, loadModel, segmentFileAsDataUrl } = useBodySegmentation();
   const [segmentedDataUrl, setSegmentedDataUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -39,42 +33,56 @@ export default function SegmentPreview({ maxPreviewWidth = 300 }: Props) {
           setScore(stats.score);
         };
         img.src = dataUrl;
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error(err);
-        setError(err?.message ?? 'Segmentation failed');
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message || 'Segmentation failed');
       }
     },
     [loadModel, segmentFileAsDataUrl]
   );
 
   return (
-    <div className="space-y-3">
-      <p className="text-sm">Model status: {status}</p>
-      <ImageUploader onUpload={handleUpload} />
+    <main className="main-content">
+      <div className="site-container">
+        <div className="site-card">
+          <div className="card-inner">
+            <div className="content-width">
+              <div className="segment-preview">
+                <h2 className="accent">Segment & Preview</h2>
+                <p className="muted">Model status: {status}</p>
+                <ImageUploader onUpload={handleUpload} />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="muted error">{error}</p>}
 
       {segmentedDataUrl && (
         <div>
-          <p className="text-3xl font-bold underline">Segmented preview:</p>
-          <img src={segmentedDataUrl} alt="segmented preview" style={{ maxWidth: maxPreviewWidth }} />
+          <p className="section-title">Segmented preview:</p>
+          <img src={segmentedDataUrl} alt="segmented preview" className="preview-image" />
 
           {palette && (
             <div className="mt-2">
-              <p className="text-sm">Palette:</p>
-              <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
+              <p className="muted">Palette:</p>
+              <div className="palette">
                 {palette.map((c) => (
-                  <div key={c} style={{ width: 36, height: 36, background: c, borderRadius: 4, border: '1px solid #ddd' }} title={c} />
+                  <div key={c} className="palette-swatch" style={{ background: c }} title={c} />
                 ))}
               </div>
             </div>
           )}
 
           {score !== null && (
-            <p className="text-sm mt-2">Palette score: {score.toFixed(2)}</p>
+            <p className="muted mt-2">Palette score: {score.toFixed(2)}</p>
           )}
         </div>
       )}
-    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
+
+export default SegmentPreview;
