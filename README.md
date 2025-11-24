@@ -17,7 +17,7 @@ npm run dev
 
 Open the printed `http://localhost:5173` (or the one Vite shows) in your browser.
 
-**Build / Preview**
+**Build / Preview** 
 
 ```powershell
 cd frontend
